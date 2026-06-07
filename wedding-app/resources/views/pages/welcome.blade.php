@@ -1,24 +1,47 @@
 <x-layouts.guest>
-    <div class="min-h-screen flex flex-col items-center justify-center">
-        <div class="text-center">
-            <h1 class="text-5xl font-serif text-stone-700 mb-4">Wedding Invitation</h1>
-            <p class="text-stone-500 text-lg">Masukkan kode undangan untuk melihat detail pernikahan kami.</p>
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-16 text-center">
 
-            <form method="GET" action="#" class="mt-8 flex gap-3 justify-center">
-                <input
-                    type="text"
-                    name="code"
-                    placeholder="Kode undangan..."
-                    class="border border-stone-300 rounded-lg px-4 py-2 text-center tracking-widest uppercase focus:outline-none focus:ring-2 focus:ring-stone-400"
-                    maxlength="8"
-                />
-                <button
-                    type="submit"
-                    class="bg-stone-700 text-white px-6 py-2 rounded-lg hover:bg-stone-800 transition"
-                >
-                    Buka Undangan
-                </button>
-            </form>
+        {{-- Logo / ornamen --}}
+        <p class="font-script text-6xl text-[var(--color-primary)] mb-2">Wedding</p>
+        <h1 class="font-serif text-2xl font-bold text-[var(--color-text)] mb-1">Invitation</h1>
+        <p class="text-sm text-[var(--color-muted)] mb-10">Masukkan kode undangan untuk membuka undangan digitalmu</p>
+
+        {{-- Form kode undangan --}}
+        <form method="GET" action="#"
+              onsubmit="event.preventDefault(); window.location='/invitation/' + this.code.value.toUpperCase()"
+              class="w-full max-w-xs flex flex-col gap-3">
+
+            <input
+                type="text"
+                name="code"
+                maxlength="8"
+                required
+                placeholder="XXXXXXXX"
+                class="w-full h-14 text-center rounded-input border border-[var(--color-border)]
+                       bg-[var(--color-surface)] text-xl font-mono font-bold tracking-[0.3em]
+                       text-[var(--color-text)] uppercase placeholder:normal-case
+                       placeholder:tracking-normal placeholder:font-normal placeholder:text-base
+                       placeholder:text-[var(--color-muted)]
+                       focus:outline-none focus:border-[var(--color-primary)]
+                       focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all"
+            />
+
+            <x-ui.btn type="submit" variant="primary" size="lg" :full="true">
+                Buka Undangan
+            </x-ui.btn>
+
+        </form>
+
+        {{-- Divider --}}
+        <div class="flex items-center gap-3 w-full max-w-xs my-8">
+            <div class="flex-1 h-px bg-[var(--color-border)]"></div>
+            <span class="text-xs text-[var(--color-muted)]">atau</span>
+            <div class="flex-1 h-px bg-[var(--color-border)]"></div>
         </div>
+
+        <x-ui.btn href="{{ route('login') }}" variant="ghost" size="md">
+            Login Admin Panel
+        </x-ui.btn>
+
     </div>
 </x-layouts.guest>

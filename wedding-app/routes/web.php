@@ -27,4 +27,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(
     Route::resource('guests', GuestController::class);
 
     Route::get('export/guests', [GuestController::class, 'export'])->name('guests.export');
+
+    // Halaman stub — akan diimplementasi di sprint berikutnya
+    Route::get('statistics', fn () => view('admin.statistics'))->name('statistics');
+    Route::get('settings',   fn () => view('admin.settings'))->name('settings');
 });
