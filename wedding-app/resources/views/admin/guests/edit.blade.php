@@ -1,67 +1,75 @@
-<x-layouts.admin>
-    <div class="max-w-2xl">
-        <div class="mb-6 flex items-center gap-4">
-            <a href="{{ route('admin.guests.index') }}" class="text-gray-500 hover:text-gray-700">← Kembali</a>
-            <h1 class="text-2xl font-bold text-gray-800">Edit Tamu</h1>
-        </div>
+<x-admin-layout title="Edit Tamu" :back="route('admin.guests.index')">
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-            <div class="mb-6 p-4 bg-gray-50 rounded-lg">
-                <p class="text-sm text-gray-500">Kode Undangan</p>
-                <p class="font-mono text-lg font-semibold text-gray-800">{{ $guest->invitation_code }}</p>
+    {{-- Kode Undangan --}}
+    <x-ui.card padding="p-4">
+        <p class="text-xs text-[var(--color-muted)] uppercase tracking-widest mb-1">Kode Undangan</p>
+        <p class="font-mono text-xl font-bold text-[var(--color-primary)] tracking-widest">{{ $guest->invitation_code }}</p>
+        <p class="text-xs text-[var(--color-muted)] mt-1">Link: {{ url('invitation/' . $guest->invitation_code) }}</p>
+    </x-ui.card>
+
+    <x-ui.card>
+        <form method="POST" action="{{ route('admin.guests.update', $guest) }}" class="flex flex-col gap-4">
+            @csrf @method('PUT')
+
+            <x-ui.input-field
+                label="Nama Lengkap"
+                name="name"
+                type="text"
+                :value="old('name', $guest->name)"
+                :error="$errors->first('name')"
+                required
+            />
+
+            <div class="grid grid-cols-2 gap-3">
+                <x-ui.input-field
+                    label="No. HP"
+                    name="phone"
+                    type="tel"
+                    :value="old('phone', $guest->phone)"
+                />
+                <x-ui.input-field
+                    label="Email"
+                    name="email"
+                    type="email"
+                    :value="old('email', $guest->email)"
+                />
             </div>
 
-            <form method="POST" action="{{ route('admin.guests.update', $guest) }}" class="space-y-5">
-                @csrf @method('PUT')
+            <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-medium text-[var(--color-text)]">Kategori</label>
+                <select name="category"
+                        class="w-full h-12 px-4 rounded-input bg-[var(--color-surface)] border border-[var(--color-border)]
+                               text-md text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]
+                               focus:ring-2 focus:ring-[var(--color-primary)]/20 transition-all">
+                    <option value="family"    @selected(old('category', $guest->category->value) === 'family')>👨‍👩‍👧 Keluarga</option>
+                    <option value="friend"    @selected(old('category', $guest->category->value) === 'friend')>👫 Teman</option>
+                    <option value="colleague" @selected(old('category', $guest->category->value) === 'colleague')>💼 Rekan Kerja</option>
+                    <option value="vip"       @selected(old('category', $guest->category->value) === 'vip')>⭐ VIP</option>
+                </select>
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap *</label>
-                    <input type="text" name="name" value="{{ old('name', $guest->name) }}"
-                           class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 @error('name') border-red-400 @enderror" />
-                    @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
-                </div>
+            <x-ui.input-field
+                label="Maks. Tamu"
+                name="max_attendees"
+                type="number"
+                :value="old('max_attendees', $guest->max_attendees)"
+                min="1"
+                max="10"
+                required
+            />
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">No. HP</label>
-                        <input type="text" name="phone" value="{{ old('phone', $guest->phone) }}"
-                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" name="email" value="{{ old('email', $guest->email) }}"
-                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
-                    </div>
-                </div>
+            <div class="flex gap-3 pt-2">
+                <x-ui.btn type="submit" variant="primary" size="md" :full="true">Perbarui</x-ui.btn>
+                <x-ui.btn href="{{ route('admin.guests.index') }}" variant="secondary" size="md">Batal</x-ui.btn>
+            </div>
+        </form>
+    </x-ui.card>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
-                        <select name="category" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400">
-                            <option value="family" @selected(old('category', $guest->category->value) === 'family')>Keluarga</option>
-                            <option value="friend" @selected(old('category', $guest->category->value) === 'friend')>Teman</option>
-                            <option value="colleague" @selected(old('category', $guest->category->value) === 'colleague')>Rekan Kerja</option>
-                            <option value="vip" @selected(old('category', $guest->category->value) === 'vip')>VIP</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Maks. Tamu *</label>
-                        <input type="number" name="max_attendees" value="{{ old('max_attendees', $guest->max_attendees) }}" min="1" max="10"
-                               class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400" />
-                    </div>
-                </div>
+    {{-- Hapus tamu --}}
+    <form method="POST" action="{{ route('admin.guests.destroy', $guest) }}"
+          onsubmit="return confirm('Hapus tamu {{ $guest->name }}?')">
+        @csrf @method('DELETE')
+        <x-ui.btn type="submit" variant="danger" size="md" :full="true">🗑 Hapus Tamu</x-ui.btn>
+    </form>
 
-                <div class="flex gap-3 pt-2">
-                    <button type="submit"
-                            class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-900 transition">
-                        Perbarui
-                    </button>
-                    <a href="{{ route('admin.guests.index') }}"
-                       class="px-6 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition">
-                        Batal
-                    </a>
-                </div>
-            </form>
-        </div>
-    </div>
-</x-layouts.admin>
+</x-admin-layout>

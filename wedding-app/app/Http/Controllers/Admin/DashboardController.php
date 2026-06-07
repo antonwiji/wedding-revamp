@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Guest;
 use App\Services\GuestService;
 use Illuminate\View\View;
 
@@ -12,8 +13,9 @@ class DashboardController extends Controller
 
     public function index(): View
     {
-        $statistics = $this->guestService->getStatistics();
+        $stats         = $this->guestService->getStatistics();
+        $recentGuests  = Guest::latest()->limit(5)->get();
 
-        return view('admin.dashboard', compact('statistics'));
+        return view('admin.dashboard', compact('stats', 'recentGuests'));
     }
 }

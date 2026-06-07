@@ -1,11 +1,12 @@
-<x-layouts.admin>
-    <div class="mb-8 flex items-center justify-between">
-        <h1 class="text-2xl font-bold text-gray-800">Manajemen Tamu</h1>
+<x-admin-layout title="Daftar Tamu">
+    <x-slot name="__topBarSlot">
         <a href="{{ route('admin.guests.create') }}"
-           class="bg-gray-800 text-white px-5 py-2 rounded-lg hover:bg-gray-900 transition text-sm">
-            + Tambah Tamu
+           class="touch-target w-10 h-10 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
         </a>
-    </div>
+    </x-slot>
 
     <livewire:admin.guest-table />
-</x-layouts.admin>
+</x-admin-layout>

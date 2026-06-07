@@ -1,3 +1,123 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Great+Vibes&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── CSS Variables ───────────────────────────────── */
+:root {
+    --color-primary:   #b5977a;
+    --color-secondary: #7c6b5e;
+    --color-surface:   #fdfaf7;
+    --color-bg:        #f5f0eb;
+    --color-text:      #2c2420;
+    --color-muted:     #9b8d84;
+    --color-border:    #e8ddd4;
+
+    --radius-card:  16px;
+    --radius-btn:   12px;
+    --radius-input: 10px;
+
+    --shadow-card:  0 2px 16px rgba(0,0,0,0.07);
+    --shadow-btn:   0 2px 8px rgba(181,151,122,0.3);
+    --shadow-sheet: 0 -4px 24px rgba(0,0,0,0.10);
+
+    --safe-top:    env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── Base Reset Mobile ───────────────────────────── */
+html {
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    height: 100%;
+    background-color: var(--color-bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--color-text);
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+}
+
+/* ── App Shell ───────────────────────────────────── */
+.app-shell-outer {
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    display: flex;
+    justify-content: center;
+}
+
+.app-shell-inner {
+    width: 100%;
+    max-width: 576px;
+    min-height: 100dvh;
+    background-color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.app-shell-inner.surface {
+    background-color: var(--color-surface);
+}
+
+/* ── Scrollbar Hidden ────────────────────────────── */
+.scroll-hidden::-webkit-scrollbar { display: none; }
+.scroll-hidden { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Typography ──────────────────────────────────── */
+.font-serif   { font-family: 'Playfair Display', serif; }
+.font-script  { font-family: 'Great Vibes', cursive; }
+
+/* ── Touch Target Helper ─────────────────────────── */
+.touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Safe Area Padding ───────────────────────────── */
+.pt-safe  { padding-top:    var(--safe-top); }
+.pb-safe  { padding-bottom: var(--safe-bottom); }
+.pt-safe-plus-4  { padding-top:    calc(var(--safe-top) + 1rem); }
+.pb-safe-plus-4  { padding-bottom: calc(var(--safe-bottom) + 1rem); }
+
+/* ── Bottom Sheet ────────────────────────────────── */
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 576px;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    box-shadow: var(--shadow-sheet);
+    padding-bottom: var(--safe-bottom);
+    z-index: 50;
+}
+
+.bottom-sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    margin: 12px auto 0;
+}
+
+/* ── Animasi ─────────────────────────────────────── */
+@keyframes slideUp {
+    from { transform: translateX(-50%) translateY(100%); opacity: 0; }
+    to   { transform: translateX(-50%) translateY(0);    opacity: 1; }
+}
+
+.animate-slide-up { animation: slideUp 0.3s ease-out; }
+
+/* ── Active state tombol ─────────────────────────── */
+.btn-press:active { transform: scale(0.97); }
